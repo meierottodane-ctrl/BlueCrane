@@ -1,0 +1,140 @@
+/*
+    Base layer — reset, typography, and the global rules that come straight from
+    the design system rather than from any one component.
+
+    Every visual value resolves to a token in tokens.css. No literals here.
+*/
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    /* The value ladder needs a floor even behind an over-scroll bounce. */
+    background: var(--chrome);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--chrome);
+    color: var(--body);
+    font-family: var(--font-sans);
+    font-size: var(--size-body);
+    font-weight: var(--weight-body);
+    letter-spacing: var(--tracking);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────── Typography ───────────────
+   Inter Tight for headings, Inter for body. Large type, thin everything else. */
+h1,
+h2,
+h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    letter-spacing: var(--tracking);
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+h1 { font-size: var(--size-display); }
+h2 { font-size: var(--size-title); }
+h3 { font-size: var(--size-body-lg); }
+
+p {
+    margin: 0;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+small,
+.caption {
+    font-size: var(--size-caption);
+    color: var(--mute);
+}
+
+.mute { color: var(--mute); }
+.ink { color: var(--ink); }
+
+/* Sky is the only accent, and selection is one of its four sanctioned uses. */
+::selection {
+    background: var(--selection);
+    color: var(--ink);
+}
+
+/* ─────────────── Focus ───────────────
+   Square, like everything else. Sky earns its place here because focus is
+   exactly the "used sparingly" case the system reserves it for. */
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+}
+
+/* ─────────────── Scrollbar ───────────────
+   Thin, monochrome, square, no arrows — matching Style.ScrollBar in the shell. */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-slate) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--color-slate);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--color-hover);
+    background-clip: padding-box;
+}
+
+/* ─────────────── Motion ───────────────
+   "Animations should feel like gliding. Nothing snaps."
+   Nothing in this system animates layout — only colour and opacity glide. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* ─────────────── Utility ─────────────── */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}

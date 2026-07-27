@@ -1,0 +1,111 @@
+/*
+    Design tokens — "Crane Browser Design System", translated for the web.
+
+    This is a 1:1 port of src/BlueCrane/Theme/Tokens.xaml. Values are carried over
+    verbatim; only the syntax changes. If a value drifts here, it has drifted from
+    the browser, and one of the two is wrong.
+
+    Nothing downstream should hard-code a literal; add a token here instead.
+*/
+
+:root {
+    /* ─────────────── Palette ───────────────
+       The five brand neutrals, verbatim from the design system. */
+    --color-navy-deep: #081528;
+    --color-navy: #0B1D36;
+    --color-slate: #44556A;
+    --color-silver: #DCE4ED;
+    --color-white: #FFFFFF;
+    --color-sky: #A9CDED;
+
+    /* Derived tones the system implies but does not name. They form one value ladder
+       climbing away from the canvas, which is what separates surfaces in a system
+       with no rounded corners and no shadows to lean on:
+         navy-deep  chrome — the rail and the top bar
+         navy       page canvas and the active nav item
+         surface    hover on the deep chrome
+         raised     input surfaces — the composer and the search field
+         hover      hover on a raised surface */
+    --color-surface: #14293F;
+    --color-raised: #1E3A57;
+    --color-hover: #2A4A6B;
+
+    /* Thin, but not invisible: a hairline has to survive on both navies. */
+    --color-hairline: #26415E;
+
+    /* Secondary text. Slate is a border/disabled value — far too dark to read on
+       Navy — so muted copy sits between Slate and Silver. */
+    --color-mute: #8FA1B6;
+
+    /* ─────────────── Semantic roles ─────────────── */
+    /* Chrome sits on the deeper navy so the feed reads as the surface above it. */
+    --chrome: var(--color-navy-deep);
+    /* Navy is the signature surface: feed canvas, active nav, splash, marketing. */
+    --canvas: var(--color-navy);
+    --surface: var(--color-surface);
+    --raised: var(--color-raised);
+    --hairline: var(--color-hairline);
+
+    --ink: var(--color-white);
+    --body: var(--color-silver);
+    --mute: var(--color-mute);
+
+    /* Sky is the only accent. Used sparingly: focus, selection, active indication.
+       It must never dominate the interface. */
+    --accent: var(--color-sky);
+    --selection: rgb(169 205 237 / 0.28);
+
+    /* ─────────────── Typography ───────────────
+       Inter Tight for headings, Inter for body; both degrade to metric-similar
+       system faces so nothing has to be shipped or downloaded. */
+    --font-display: "Inter Tight", Inter, "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+    --font-sans: Inter, "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+    --size-display: 28px;
+    --size-title: 20px;
+    --size-body-lg: 16px;
+    --size-body: 14px;
+    --size-caption: 12px;
+
+    --weight-display: 700;
+    --weight-button: 600;
+    --weight-body: 400;
+
+    /* Tracking is -1% of the size. */
+    --tracking: -0.01em;
+
+    /* ─────────────── Radius ───────────────
+       Square. Edges are defined by value contrast and thin hairlines, never by a
+       curve — the one exception is the app icon, whose 16% radius is fixed by the
+       platform's icon mask rather than by this system.
+
+       This token exists so the rule is greppable, not so it can be changed. */
+    --radius: 0;
+
+    /* ─────────────── Spacing ─────────────── */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 20px;
+    --space-xl: 32px;
+
+    --pad-button: 9px 18px;
+    --pad-field: 0 18px;
+
+    /* ─────────────── Motion ───────────────
+       "Animations should feel like gliding. Nothing snaps." */
+    --motion-fast: 150ms;
+    --motion-base: 200ms;
+    --motion-slow: 250ms;
+
+    --ease: cubic-bezier(0.18, 0.89, 0.32, 1);
+
+    /* ─────────────── Layout ───────────────
+       Web-only. The browser shell had no scrolling column to size. */
+    --rail-width: 64px;
+    --rail-width-open: 220px;
+    --feed-width: 600px;
+    --aside-width: 300px;
+    --bar-height: 56px;
+}
