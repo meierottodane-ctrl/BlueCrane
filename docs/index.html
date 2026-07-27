@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Blue Crane Browser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --dark-navy: #081528;
+    --navy: #0B1D36;
+    --hairline: #26415E;
+    --ink: #FFFFFF;
+    --body: #DCE4ED;
+    --mute: #A9B7C8;
+    --accent: #A9CDED;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark-navy);
+    color: var(--body);
+    font-family: -apple-system, "Segoe UI", Inter, Arial, sans-serif;
+  }
+  main {
+    max-width: 480px;
+    padding: 48px 32px;
+    text-align: center;
+  }
+  h1 {
+    color: var(--ink);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  p.tagline {
+    color: var(--mute);
+    margin-bottom: 32px;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  a.button {
+    display: block;
+    padding: 14px 20px;
+    background: var(--navy);
+    border: 1px solid var(--hairline);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  a.button:hover { border-color: var(--accent); }
+  a.plain {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Blue Crane Browser</h1>
+  <p class="tagline">Lightweight. Suspends idle tabs. No bloat, no ads.</p>
+  <div class="links">
+    <a class="button" href="BlueCraneBrowserSetup.exe">Download for Windows (x64)</a>
+    <a class="plain" href="privacy.html">Privacy Policy</a>
+    <a class="plain" href="https://github.com/meierottodane-ctrl/BlueCrane">View on GitHub</a>
+  </div>
+</main>
+</body>
+</html>
