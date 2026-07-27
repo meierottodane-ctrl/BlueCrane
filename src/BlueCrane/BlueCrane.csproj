@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>BlueCrane</AssemblyName>
+    <AssemblyName>Blue Crane Browser</AssemblyName>
     <RootNamespace>BlueCrane</RootNamespace>
     <Product>Blue Crane Browser</Product>
     <AssemblyTitle>Blue Crane Browser</AssemblyTitle>
