@@ -1,0 +1,341 @@
+# Crane Browser Design System
+
+> Elegant. Fast. Calm.
+
+The Crane identity is inspired by the Sandhill Crane in flight. It represents
+clarity, freedom, intelligence, and effortless movement.
+
+Unlike aggressive browser branding, Crane feels lightweight and premium.
+
+---
+
+# Brand Personality
+
+- Calm
+- Intelligent
+- Fast
+- Premium
+- Minimal
+- Modern
+- Trustworthy
+
+Imagine if Apple designed a web browser.
+
+---
+
+# Logo Philosophy
+
+The logo is not flat.
+
+Instead, the crane uses subtle depth through layered white tones.
+
+The goal is to create an icon that feels alive while remaining extremely clean.
+
+Never use harsh outlines.
+
+The silhouette should always remain recognizable at 16px.
+
+---
+
+# Primary Logo
+
+White Crane
+
+Background:
+#0B1D36
+
+The bird should always be rendered in layered whites.
+
+Primary Feather Color
+
+#FFFFFF
+
+Secondary Feather
+
+#EEF3F8
+
+Shadow
+
+#DCE4ED
+
+Highlight
+
+#FFFFFF at 70% opacity
+
+No black should ever appear inside the bird.
+
+Depth comes from value changes—not color.
+
+---
+
+# Primary Background
+
+Navy
+
+#0B1D36
+
+This becomes the application's signature color.
+
+It should appear everywhere:
+
+- New Tab
+- Splash Screen
+- Install Screen
+- Loading
+- Marketing
+
+---
+
+# Accent Color
+
+Sky
+
+#A9CDED
+
+Used sparingly.
+
+Applications:
+
+• Hover states
+
+• Selection
+
+• Active tabs
+
+• Icons
+
+• Progress bars
+
+Never dominate the interface.
+
+---
+
+# Neutral Palette
+
+Dark Navy
+
+#081528
+
+Primary Navy
+
+#0B1D36
+
+Slate
+
+#44556A
+
+Silver
+
+#DCE4ED
+
+White
+
+#FFFFFF
+
+---
+
+# Icon Style
+
+Rounded square.
+
+16% corner radius.
+
+White Crane centered.
+
+No gradients in background.
+
+Background stays solid #0B1D36.
+
+The bird may contain subtle shading.
+
+Note: the 16% radius is scoped to the app icon only, where it is fixed by
+platform icon masks (macOS, Windows, Android, iOS). It does not extend to
+in-app UI — see Visual Direction and Interface Principles below.
+
+---
+
+# Visual Direction
+
+Large amounts of negative space.
+
+Very little decoration.
+
+Large typography.
+
+Square corners.
+
+Thin borders.
+
+No shadows.
+
+Separation comes from value contrast and hairlines, never a curve or a
+drop shadow.
+
+Everything should feel effortless.
+
+---
+
+# Typography
+
+Headings
+
+Inter Tight
+
+Weight
+
+700
+
+Body
+
+Inter
+
+Weight
+
+400
+
+Buttons
+
+600
+
+Tracking
+
+-1%
+
+---
+
+# Motion
+
+Animations should feel like gliding.
+
+Nothing snaps.
+
+Everything eases.
+
+Duration
+
+150–250ms
+
+Preferred easing
+
+cubic-bezier(.18,.89,.32,1)
+
+---
+
+# Interface Principles
+
+## Tabs
+
+Square.
+
+Sit flush against the deeper navy chrome behind them.
+
+No shadows. The active tab is distinguished by lifting to the signature
+Navy against the darker chrome — value contrast only, no elevation effects.
+
+## Address Bar
+
+Large.
+
+Full-width square band, not an inset field.
+
+Minimal chrome — no border on the input itself; the band it sits in
+carries the only hairline.
+
+## Sidebar
+
+Dark navy.
+
+Icons only.
+
+Expands on hover.
+
+---
+
+# Design Keywords
+
+Air
+
+Freedom
+
+Flow
+
+Minimal
+
+Premium
+
+Weightless
+
+Precision
+
+Calm
+
+Confidence
+
+Intelligence
+
+---
+
+# Don't
+
+❌ Heavy outlines
+
+❌ Bright gradients
+
+❌ Any drop shadow, hard or soft
+
+❌ Rounded corners in the UI chrome (tabs, address bar, buttons, panels)
+
+❌ Pure black
+
+❌ Skeuomorphism
+
+❌ Excessive glass
+
+---
+
+# Do
+
+✓ Soft white layering
+
+✓ Lots of breathing room
+
+✓ Navy backgrounds
+
+✓ Thin borders
+
+✓ Square corners
+
+✓ Large whitespace
+
+✓ Gentle motion
+
+✓ Elegant proportions
+
+---
+
+# Favicon
+
+16×16
+
+Simplify wing feathers.
+
+Remove fine feather detail.
+
+Keep only:
+
+- neck
+- head
+- wing silhouette
+- tail
+
+The favicon should still be recognizable instantly.
+
+---
+
+# Brand Statement
+
+Crane is a browser designed to disappear.
+
+The interface never competes with the web.
+
+It simply carries you there with speed, elegance, and clarity.

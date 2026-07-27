@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New tab</title>
+<link rel="icon" href="crane-white.png">
+<style>
+  /* ── Crane tokens ───────────────────────────────────────── */
+  :root {
+    --navy-deep: #081528;
+    --navy:      #0B1D36;
+    --surface:   #14293F;
+    --raised:    #1E3A57;   /* input surfaces, a clear step above the canvas */
+    --hairline:  #26415E;
+    --slate:     #44556A;
+    --mute:      #8FA1B6;   /* secondary copy — slate is too dark to read on navy */
+    --silver:    #DCE4ED;
+    --white:     #FFFFFF;
+    --sky:       #A9CDED;
+
+    --ease: cubic-bezier(.18,.89,.32,1);
+    --display: "Inter Tight", Inter, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+    --body: Inter, "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--navy);
+    color: var(--silver);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The page is mostly air. Everything sits in one narrow centred column. */
+  main {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px 96px;
+    gap: 40px;
+  }
+
+  /* ── Brand ──────────────────────────────────────────────── */
+  /* The wordmark sits close under the mark so the two read as one lockup. */
+  .brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+  .brand img {
+    width: 264px;
+    height: auto;
+    /* Barely-there glow — enough to seat the mark on the navy, not enough to notice. */
+    filter: drop-shadow(0 8px 32px rgba(169, 205, 237, .10));
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 40px;
+    letter-spacing: -.01em;
+    color: var(--white);
+  }
+
+  .tagline {
+    margin: 10px 0 0;
+    font-size: 15px;
+    letter-spacing: -.01em;
+    color: var(--mute);
+  }
+
+  /* ── Search ─────────────────────────────────────────────── */
+  form { width: min(680px, 100%); }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 60px;
+    padding: 0 24px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    transition: border-color .2s var(--ease), background-color .2s var(--ease);
+  }
+  .field:focus-within {
+    border-color: var(--sky);
+    background: #24466A;
+  }
+
+  /* The magnifier is a real submit button, not decoration — clicking it searches. */
+  .go {
+    display: flex;
+    flex: none;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: default;
+  }
+  .field svg { stroke: var(--mute); transition: stroke .2s var(--ease); }
+  .field:focus-within svg { stroke: var(--sky); }
+  .go:hover svg { stroke: var(--white); }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: none;
+    border: 0;
+    outline: 0;
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 17px;
+    letter-spacing: -.01em;
+  }
+  input::placeholder { color: var(--mute); }
+
+  /* ── Disclosures ────────────────────────────────────────────
+     Everything that is not the search bar lives in here, closed by default. */
+  nav { display: flex; gap: 8px; }
+
+  details { position: relative; }
+
+  summary {
+    list-style: none;
+    cursor: default;
+    padding: 8px 16px;
+    color: var(--mute);
+    font-size: 13px;
+    letter-spacing: -.01em;
+    transition: color .15s var(--ease), background-color .15s var(--ease);
+    user-select: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--white); background: var(--surface); }
+  details[open] summary { color: var(--sky); background: var(--surface); }
+
+  .panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 420px;
+    padding: 20px;
+    background: var(--navy-deep);
+    border: 1px solid var(--hairline);
+    box-shadow: 0 18px 48px rgba(8, 21, 40, .55);
+    animation: rise .2s var(--ease);
+    z-index: 2;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translate(-50%, -6px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+  }
+
+  .links { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 24px; }
+  .panel a {
+    display: block;
+    padding: 7px 0;
+    color: var(--silver);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color .15s var(--ease);
+  }
+  .panel a:hover { color: var(--sky); }
+
+  .keys { display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; font-size: 13px; }
+  .keys dt { color: var(--white); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .keys dd { margin: 0; color: var(--slate); }
+
+  .about img { width: 100%; display: block; margin-bottom: 14px; }
+  .about p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--slate); }
+  .about strong { color: var(--silver); font-weight: 500; }
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">
+    <img src="crane-white.png" alt="">
+    <h1>Blue Crane Browser</h1>
+    <p class="tagline">migrate where you need to with no distractions</p>
+  </div>
+
+  <form id="search" autocomplete="off">
+    <div class="field">
+      <button class="go" type="submit" aria-label="Search">
+        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" stroke-width="1.6"
+             stroke-linecap="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="6"></circle>
+          <path d="M12.5 12.5 L17 17"></path>
+        </svg>
+      </button>
+      <input id="q" type="text" placeholder="Search or enter address" autofocus
+             spellcheck="false" aria-label="Search or enter address">
+    </div>
+  </form>
+
+  <nav>
+    <details name="menu">
+      <summary>Links</summary>
+      <div class="panel">
+        <div class="links">
+          <a href="https://mail.google.com">Mail</a>
+          <a href="https://github.com">GitHub</a>
+          <a href="https://news.ycombinator.com">Hacker News</a>
+          <a href="https://en.wikipedia.org">Wikipedia</a>
+          <a href="https://maps.google.com">Maps</a>
+          <a href="https://youtube.com">YouTube</a>
+          <a href="https://drive.google.com">Drive</a>
+          <a href="https://calendar.google.com">Calendar</a>
+        </div>
+      </div>
+    </details>
+
+    <details name="menu">
+      <summary>Shortcuts</summary>
+      <div class="panel">
+        <dl class="keys">
+          <dt>Ctrl T</dt><dd>New tab</dd>
+          <dt>Ctrl W</dt><dd>Close tab</dd>
+          <dt>Ctrl L</dt><dd>Focus address bar</dd>
+          <dt>Ctrl R</dt><dd>Reload</dd>
+          <dt>Ctrl Tab</dt><dd>Next tab</dd>
+          <dt>Ctrl 1–9</dt><dd>Jump to tab</dd>
+          <dt>Alt ←  →</dt><dd>Back and forward</dd>
+        </dl>
+      </div>
+    </details>
+
+    <details name="menu">
+      <summary>About</summary>
+      <div class="panel about">
+        <img src="crane-hero.png" alt="">
+        <p><strong>Blue Crane Browser</strong> is designed to disappear. The interface
+        never competes with the web — it simply carries you there.</p>
+        <p style="margin-top:10px">Background tabs freeze after 90 seconds and unload
+        after 10 minutes, so a long session costs a fraction of the memory.</p>
+        <p style="margin-top:14px"><a href="setup.html">Change search engine</a></p>
+      </div>
+    </details>
+  </nav>
+</main>
+
+<script>
+  var field = document.querySelector('.field');
+  var q = document.getElementById('q');
+
+  // The search engine lives in the host, not the page — so it can be swapped
+  // without touching this file, and the page needs no network access of its own.
+  document.getElementById('search').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var value = q.value.trim();
+    if (value) window.chrome.webview.postMessage({ type: 'navigate', value: value });
+  });
+
+  // pageshow rather than load: coming back from a result page restores this document
+  // from the back/forward cache, where load never fires again and the caret would be
+  // left nowhere.
+  window.addEventListener('pageshow', function () { q.focus(); });
+
+  // Clicking anywhere on the bar puts the caret in it, not just the input itself.
+  field.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('button')) return;
+    e.preventDefault();
+    q.focus();
+  });
+
+  // Typing anywhere on the page starts a search, so a stray click never swallows keys.
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (document.activeElement === q || e.key.length !== 1) return;
+    q.focus();
+  });
+
+  // Clicking a disclosure closes any other that is open.
+  var panels = document.querySelectorAll('details');
+  panels.forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (!d.open) return;
+      panels.forEach(function (o) { if (o !== d) o.open = false; });
+    });
+  });
+
+  // Clicking anywhere else dismisses them.
+  document.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('details')) return;
+    panels.forEach(function (d) { d.open = false; });
+  });
+
+  window.addEventListener('load', function () { document.getElementById('q').focus(); });
+</script>
+</body>
+</html>

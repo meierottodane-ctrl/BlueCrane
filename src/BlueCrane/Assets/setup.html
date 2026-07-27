@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up Blue Crane Browser</title>
+<link rel="icon" href="crane-white.png">
+<style>
+  :root {
+    --navy-deep: #081528;
+    --navy:      #0B1D36;
+    --surface:   #14293F;
+    --raised:    #1E3A57;
+    --hairline:  #26415E;
+    --slate:     #44556A;
+    --mute:      #8FA1B6;
+    --silver:    #DCE4ED;
+    --white:     #FFFFFF;
+    --sky:       #A9CDED;
+
+    --ease: cubic-bezier(.18,.89,.32,1);
+    --display: "Inter Tight", Inter, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+    --body: Inter, "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--navy);
+    color: var(--silver);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    gap: 40px;
+  }
+
+  .brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .brand img {
+    width: 168px;
+    height: auto;
+    filter: drop-shadow(0 8px 32px rgba(169, 205, 237, .10));
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -.01em;
+    color: var(--white);
+  }
+
+  .lede { margin: 10px 0 0; font-size: 15px; letter-spacing: -.01em; color: var(--mute); }
+
+  /* ── Engine choice ──────────────────────────────────────── */
+  fieldset { border: 0; margin: 0; padding: 0; }
+  legend {
+    padding: 0 0 14px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .engines { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  .engines input { position: absolute; opacity: 0; pointer-events: none; }
+
+  .engines label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 172px;
+    padding: 20px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    cursor: default;
+    transition: border-color .15s var(--ease), background-color .15s var(--ease);
+  }
+  .engines label:hover { background: #24466A; }
+
+  .engines .name { font-size: 15px; color: var(--white); letter-spacing: -.01em; }
+  .engines .note { font-size: 12px; color: var(--mute); min-height: 16px; }
+
+  /* Sky marks the selection and nothing else on this screen. */
+  .engines input:checked + label { border-color: var(--sky); background: #24466A; }
+  .engines input:checked + label .name { color: var(--sky); }
+  .engines input:focus-visible + label { border-color: var(--sky); }
+
+  /* ── Continue ───────────────────────────────────────────── */
+  button {
+    padding: 14px 40px;
+    background: var(--sky);
+    color: var(--navy-deep);
+    border: 0;
+    font-family: var(--body);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    cursor: default;
+    transition: filter .15s var(--ease);
+  }
+  button:hover { filter: brightness(1.08); }
+
+  .footnote { margin: 0; font-size: 12px; color: var(--slate); }
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">
+    <img src="crane-white.png" alt="">
+    <h1>Blue Crane Browser</h1>
+    <p class="lede">Choose how you search, then you are on your way.</p>
+  </div>
+
+  <form id="setup">
+    <fieldset>
+      <legend>Search engine</legend>
+      <div class="engines">
+        <input type="radio" name="engine" id="webcrawler" value="webcrawler" checked>
+        <label for="webcrawler"><span class="name">WebCrawler</span><span class="note">Default</span></label>
+
+        <input type="radio" name="engine" id="google" value="google">
+        <label for="google"><span class="name">Google</span><span class="note"></span></label>
+
+        <input type="radio" name="engine" id="bing" value="bing">
+        <label for="bing"><span class="name">Bing</span><span class="note"></span></label>
+
+        <input type="radio" name="engine" id="duckduckgo" value="duckduckgo">
+        <label for="duckduckgo"><span class="name">DuckDuckGo</span><span class="note"></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <button type="submit" form="setup">Continue</button>
+
+  <p class="footnote">You can change this later from About on the new tab page.</p>
+</main>
+
+<script>
+  document.getElementById('setup').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var picked = document.querySelector('input[name="engine"]:checked');
+    window.chrome.webview.postMessage({ type: 'setup', value: picked ? picked.value : 'webcrawler' });
+  });
+</script>
+</body>
+</html>

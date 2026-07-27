@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>BlueCrane</AssemblyName>
+    <RootNamespace>BlueCrane</RootNamespace>
+    <Product>Blue Crane Browser</Product>
+    <AssemblyTitle>Blue Crane Browser</AssemblyTitle>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Also becomes the default Window.Icon and the taskbar icon. -->
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <!-- Memory posture: workstation GC, non-concurrent. A browser shell spends its
+       life idle between user gestures; the background GC heap and per-core server
+       heaps are pure overhead here. -->
+  <PropertyGroup>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <RetainVMGarbageCollection>false</RetainVMGarbageCollection>
+    <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- No InvariantGlobalization: WPF needs ICU data and fails type initialisation without it. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
+  </ItemGroup>
+
+  <!-- The start page is served from disk through a WebView2 virtual host, so these
+       ship as loose files next to the exe rather than as embedded resources. -->
+  <ItemGroup>
+    <Content Include="Assets\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
