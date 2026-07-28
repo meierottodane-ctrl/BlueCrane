@@ -99,9 +99,18 @@ because they are real differences, not oversights:
   is unchanged. Worth resolving deliberately if the sheet is meant to be
   authoritative on palette.
 
+## Framework
+
+None, deliberately. Plain HTML and CSS with a little vanilla JS: no build step,
+no dependencies, no network requests. `index.html` opens from the filesystem.
+
+Nothing here is a dead end if that changes. The tokens, base layer and components
+are framework-agnostic and drop into React, Svelte or Next unchanged — only the
+markup in `index.html` would need porting, and the CSS would carry over as-is.
+
 ## Not built yet
 
-- Framework choice. Nothing here assumes one; the tokens, base layer and
-  components drop into React/Svelte/Next or plain HTML unchanged.
 - A mobile nav. Below 720px the feed goes fluid and the rail stays a 64px
   overlay, which works but is not what a phone should get.
+- Real behaviour. The demo's JS covers the like/repost toggle, the feed tabs and
+  the composer; everything else is static markup.
