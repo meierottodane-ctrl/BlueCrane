@@ -44,6 +44,8 @@
     --canvas: var(--color-navy);
     --surface: var(--color-surface);
     --raised: var(--color-raised);
+    /* The top rung: hover on a raised surface, and the fill Style.IconButton glides in. */
+    --hover: var(--color-hover);
     --hairline: var(--color-hairline);
 
     --ink: var(--color-white);
@@ -93,6 +95,33 @@
     --pad-button: 9px 18px;
     --pad-field: 0 18px;
 
+    /* Web-only. Pad.Omnibox is a single-line band whose text is centred vertically;
+       a composer wraps to several lines and has to carry its own top and bottom. */
+    --pad-compose: 14px 18px;
+
+    /* ─────────────── Controls ───────────────
+       Lifted from Controls.xaml and Icons.xaml, which set these on the styles rather
+       than in Tokens.xaml. They are tokens here because the web has more places that
+       need them and no ControlTemplate to inherit from. */
+
+    /* A hairline is 1px at every DPI — the border thickness the whole system separates on. */
+    --hairline-width: 1px;
+
+    /* Style.IconButton is 34×34, Style.TabClose 22×22. */
+    --hit-icon: 34px;
+    --hit-icon-sm: 22px;
+
+    /* Icons.xaml draws on a 16×16 grid at 1.3 stroke, round caps and joins, never filled. */
+    --glyph: 16px;
+    --stroke-glyph: 1.3;
+
+    /* Style.IconButton's disabled trigger. */
+    --opacity-disabled: 0.28;
+
+    /* Web-only. Square, like everything else — see the note in web/README.md. */
+    --avatar: 48px;
+    --avatar-sm: 32px;
+
     /* ─────────────── Motion ───────────────
        "Animations should feel like gliding. Nothing snaps." */
     --motion-fast: 150ms;
@@ -108,4 +137,5 @@
     --feed-width: 600px;
     --aside-width: 300px;
     --bar-height: 56px;
+    --compose-min-height: 84px;
 }

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crane — social app, design system demo</title>
+<meta name="description" content="Every primitive in the Crane social app, rendered together so the design language can be judged at a glance.">
+
+<!--
+    A demo, not an app. Every primitive in components.css appears here at least once
+    with plausible content, so the language can be judged as a whole rather than as a
+    list of rules.
+
+    Dependency-free and self-contained: it opens straight from the filesystem, with
+    three stylesheets and no build step, no framework and no network requests.
+-->
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+
+<!--
+    Icons, in the idiom of src/BlueCrane/Theme/Icons.xaml: stroked on a 16×16 grid,
+    round caps and joins, never filled. Reload, Plus and Close and Globe are that
+    file's path data verbatim.
+
+    The shapes follow the Blue Crane icon sheet — its navigation row (back, forward,
+    home, reload, new tab, bookmark, download, privacy, menu, close tab) and utility
+    row (search, voice search, settings, account, lock) are all defined here, redrawn
+    as vectors. The sheet is a raster contact sheet, so cropping it would have given
+    blurry, non-recolourable icons that could not inherit currentColor or transition
+    on hover; redrawing keeps every glyph crisp at any DPI and lets the whole set
+    take the value ladder's colour changes.
+
+    A social app also needs verbs a browser does not have — reply, repost, like,
+    share, poll, emoji, bell, message, trend — so those are drawn to match rather
+    than taken from the sheet.
+
+    Nothing sets its own stroke or fill, so .glyph's currentColor reaches every path.
+-->
+<svg class="visually-hidden" aria-hidden="true" focusable="false"><defs>
+    <!-- The crane, at glyph scale — and the one glyph that is filled rather than
+         stroked. Two rules from the system force that: "Never use harsh outlines"
+         is stated about the bird specifically, and the favicon rule asks for a
+         "wing silhouette" with the fine feather detail removed. An outline of a
+         crane is exactly the harsh outline it rules out.
+
+         Traced from Assets/crane-white.png — the real illustration — with the
+         feather detail closed into a single silhouette, which is what "Simplify
+         wing feathers. Remove fine feather detail" asks for. It carries the solid
+         glyph modifier wherever it is used. The full illustration is used at
+         sizes that can hold it; see the brand avatar. -->
+    <symbol id="i-crane" viewBox="0 0 16 16">
+        <path d="M1.81,2.53 L3.12,3.85 L5.20,4.89 L6.37,5.92 L8.10,6.89 L9.28,6.82 L9.83,6.55 L10.80,5.44 L11.49,3.85 L12.74,3.23 L11.22,4.96 L10.39,6.62 L10.39,7.31 L11.29,7.38 L12.53,7.03 L14.33,7.03 L14.82,6.69 L14.88,6.34 L15.30,6.34 L15.30,8.28 L14.54,8.28 L14.47,8.62 L13.09,8.62 L10.94,9.31 L8.52,9.80 L7.14,11.04 L5.41,13.05 L5.34,13.47 L5.20,12.84 L6.37,11.32 L6.37,10.63 L6.24,10.56 L6.58,10.28 L6.58,9.25 L4.37,7.72 L3.81,7.10 L3.12,6.69 L2.78,6.20 L2.57,6.20 L1.46,5.23 L0.84,5.09 L0.70,3.64 L1.12,3.64 L1.18,2.95 L1.74,2.95 L1.81,2.53 Z"/>
+    </symbol>
+
+    <!-- ── Navigation row, from the icon sheet ── -->
+    <symbol id="i-back" viewBox="0 0 16 16">
+        <path d="M13.2,8 L3.2,8 M7.6,3.6 L3,8 L7.6,12.4"/>
+    </symbol>
+    <symbol id="i-forward" viewBox="0 0 16 16">
+        <path d="M2.8,8 L12.8,8 M8.4,3.6 L13,8 L8.4,12.4"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 16 16">
+        <path d="M2,7.6 L8,2.4 L14,7.6"/>
+        <path d="M3.6,6.4 L3.6,13.4 L12.4,13.4 L12.4,6.4"/>
+    </symbol>
+    <symbol id="i-reload" viewBox="0 0 16 16">
+        <path d="M13,8 A5,5 0 1,1 11.2,4.2 M13.4,2 L13.4,5.2 L10.2,5.2"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16">
+        <path d="M8,4 L8,12 M4,8 L12,8"/>
+    </symbol>
+    <!-- The sheet's bookmark is a star, not a ribbon. -->
+    <symbol id="i-bookmark" viewBox="0 0 16 16">
+        <path d="M8,2.3 L9.44,6.32 L13.71,6.45 L10.33,9.06 L11.53,13.15 L8,10.75 L4.47,13.15 L5.67,9.06 L2.29,6.45 L6.56,6.32 Z"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 16 16">
+        <path d="M8,2.6 L8,10.4 M4.9,7.4 L8,10.4 L11.1,7.4"/>
+        <path d="M2.8,11.6 L2.8,13.4 L13.2,13.4 L13.2,11.6"/>
+    </symbol>
+    <symbol id="i-privacy" viewBox="0 0 16 16">
+        <path d="M8,2.4 L13.2,4.6 C13.2,9.5 10.9,12.5 8,13.6 C5.1,12.5 2.8,9.5 2.8,4.6 Z"/>
+    </symbol>
+    <!-- The sheet's menu is a vertical ellipsis. Three round caps on near-zero
+         segments give dots without leaving the stroke idiom. -->
+    <symbol id="i-more" viewBox="0 0 16 16">
+        <path d="M8,3.6 L8,3.61 M8,8 L8,8.01 M8,12.4 L8,12.41"/>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 16 16">
+        <path d="M4.5,4.5 L11.5,11.5 M11.5,4.5 L4.5,11.5"/>
+    </symbol>
+
+    <!-- ── Utility row, from the icon sheet ── -->
+    <symbol id="i-search" viewBox="0 0 16 16">
+        <path d="M11.6,7.1 A4.5,4.5 0 1,1 2.6,7.1 A4.5,4.5 0 1,1 11.6,7.1"/>
+        <path d="M10.4,10.4 L14,14"/>
+    </symbol>
+    <symbol id="i-voice" viewBox="0 0 16 16">
+        <path d="M8,2.2 A1.9,1.9 0 0,1 9.9,4.1 L9.9,7.8 A1.9,1.9 0 0,1 6.1,7.8 L6.1,4.1 A1.9,1.9 0 0,1 8,2.2 Z"/>
+        <path d="M3.9,7.6 A4.1,4.1 0 0,0 12.1,7.6 M8,11.7 L8,13.6"/>
+    </symbol>
+    <symbol id="i-settings" viewBox="0 0 16 16">
+        <path d="M10.4,8 A2.4,2.4 0 1,1 5.6,8 A2.4,2.4 0 1,1 10.4,8"/>
+        <path d="M6.9,1.9 L9.1,1.9 L9.4,4.1 L11,5 L12.8,3.7 L14.3,5.4 L13,7 L13,9 L14.3,10.6 L12.8,12.3 L11,11 L9.4,11.9 L9.1,14.1 L6.9,14.1 L6.6,11.9 L5,11 L3.2,12.3 L1.7,10.6 L3,9 L3,7 L1.7,5.4 L3.2,3.7 L5,5 Z"/>
+    </symbol>
+    <symbol id="i-person" viewBox="0 0 16 16">
+        <path d="M8,7.8 A2.6,2.6 0 1,1 8,2.6 A2.6,2.6 0 1,1 8,7.8"/>
+        <path d="M3.2,13.6 C3.2,10.6 5.4,9.4 8,9.4 C10.6,9.4 12.8,10.6 12.8,13.6"/>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 16 16">
+        <path d="M4.3,7.2 L11.7,7.2 L11.7,13.5 L4.3,13.5 Z"/>
+        <path d="M6.2,7.2 L6.2,5.4 A1.8,1.8 0 0,1 9.8,5.4 L9.8,7.2"/>
+    </symbol>
+
+    <!-- ── Social verbs, drawn to match the sheet's weight ── -->
+    <symbol id="i-globe" viewBox="0 0 16 16">
+        <path d="M8,2 A6,6 0 1,1 7.99,2 M2,8 L14,8 M8,2 C5.5,4.5 5.5,11.5 8,14 M8,2 C10.5,4.5 10.5,11.5 8,14"/>
+    </symbol>
+    <symbol id="i-bell" viewBox="0 0 16 16">
+        <path d="M4,11.4 C5,10.4 5,9.8 5,7.2 A3,3 0 0,1 11,7.2 C11,9.8 11,10.4 12,11.4 Z"/>
+        <path d="M6.7,13.3 A1.5,1.5 0 0,0 9.3,13.3"/>
+    </symbol>
+    <symbol id="i-message" viewBox="0 0 16 16">
+        <path d="M2.6,3.4 L13.4,3.4 L13.4,10.8 L7.2,10.8 L4.2,13.4 L4.2,10.8 L2.6,10.8 Z"/>
+    </symbol>
+    <symbol id="i-reply" viewBox="0 0 16 16">
+        <path d="M2.6,3.6 L13.4,3.6 L13.4,10.6 L7.4,10.6 L4.4,13.2 L4.4,10.6 L2.6,10.6 Z"/>
+    </symbol>
+    <symbol id="i-repost" viewBox="0 0 16 16">
+        <path d="M3.2,6.6 L3.2,4.2 L11.4,4.2 M9.4,2.2 L11.6,4.2 L9.4,6.2"/>
+        <path d="M12.8,9.4 L12.8,11.8 L4.6,11.8 M6.6,9.8 L4.4,11.8 L6.6,13.8"/>
+    </symbol>
+    <symbol id="i-like" viewBox="0 0 16 16">
+        <path d="M8,13.5 C8,13.5 1.6,9.7 1.6,5.7 C1.6,3.7 3.2,2.4 5,2.4 C6.4,2.4 7.4,3.2 8,4.3 C8.6,3.2 9.6,2.4 11,2.4 C12.8,2.4 14.4,3.7 14.4,5.7 C14.4,9.7 8,13.5 8,13.5 Z"/>
+    </symbol>
+    <symbol id="i-share" viewBox="0 0 16 16">
+        <path d="M8,10.4 L8,2.4 M5.2,5.2 L8,2.4 L10.8,5.2"/>
+        <path d="M3.6,8.4 L3.6,13.4 L12.4,13.4 L12.4,8.4"/>
+    </symbol>
+    <symbol id="i-image" viewBox="0 0 16 16">
+        <path d="M2.4,3.4 L13.6,3.4 L13.6,12.6 L2.4,12.6 Z"/>
+        <path d="M2.4,10.2 L5.9,7 L8.6,9.6 M9.4,10.2 L11.4,8.3 L13.6,10.3"/>
+        <path d="M10.6,6.2 L10.61,6.2"/>
+    </symbol>
+    <symbol id="i-poll" viewBox="0 0 16 16">
+        <path d="M3,4.4 L13,4.4 M3,8 L10,8 M3,11.6 L7,11.6"/>
+    </symbol>
+    <symbol id="i-emoji" viewBox="0 0 16 16">
+        <path d="M14,8 A6,6 0 1,1 2,8 A6,6 0 1,1 14,8"/>
+        <path d="M5.8,6.4 L5.81,6.4 M10.2,6.4 L10.21,6.4"/>
+        <path d="M5.4,9.6 A3.3,3.3 0 0,0 10.6,9.6"/>
+    </symbol>
+    <symbol id="i-trend" viewBox="0 0 16 16">
+        <path d="M2.4,11.6 L6,7.6 L9,10.2 L13.6,4.4"/>
+        <path d="M10.4,4.4 L13.6,4.4 L13.6,7.6"/>
+    </symbol>
+</defs></svg>
+
+<div class="app">
+
+    <!-- ─────────────── Rail ───────────────
+         Dark navy, icons only, expands on hover. Fixed, so expanding it never moves
+         anything else on the page. -->
+    <nav class="rail" aria-label="Primary">
+        <a class="rail__brand" href="#">
+            <span class="rail__slot"><svg class="glyph glyph--solid" aria-hidden="true"><use href="#i-crane"/></svg></span>
+            <span class="rail__label rail__wordmark">Crane</span>
+        </a>
+
+        <div class="rail__nav">
+            <a class="rail__item" href="#" aria-current="page">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-home"/></svg></span>
+                <span class="rail__label">Home</span>
+            </a>
+            <a class="rail__item" href="#">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-globe"/></svg></span>
+                <span class="rail__label">Explore</span>
+            </a>
+            <a class="rail__item" href="#">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-bell"/></svg></span>
+                <span class="rail__label">Notifications</span>
+            </a>
+            <a class="rail__item" href="#">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-message"/></svg></span>
+                <span class="rail__label">Messages</span>
+            </a>
+            <a class="rail__item" href="#">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-bookmark"/></svg></span>
+                <span class="rail__label">Bookmarks</span>
+            </a>
+            <a class="rail__item" href="#">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-person"/></svg></span>
+                <span class="rail__label">Profile</span>
+            </a>
+
+            <button class="rail__item rail__action" type="button">
+                <span class="rail__slot"><svg class="glyph" aria-hidden="true"><use href="#i-plus"/></svg></span>
+                <span class="rail__label">New post</span>
+            </button>
+        </div>
+
+        <a class="rail__item rail__foot" href="#">
+            <span class="rail__slot"><span class="avatar avatar--sm">IM</span></span>
+            <span class="rail__label">
+                <span class="rail__name">Ines Moreau</span>
+                <span class="rail__handle">@inesm</span>
+            </span>
+        </a>
+    </nav>
+
+    <div class="app__main">
+
+        <header class="topbar">
+            <h1 class="topbar__title">Home</h1>
+            <button class="icon-btn" type="button" aria-label="Refresh">
+                <svg class="glyph" aria-hidden="true"><use href="#i-reload"/></svg>
+            </button>
+            <button class="icon-btn" type="button" aria-label="Feed settings">
+                <svg class="glyph" aria-hidden="true"><use href="#i-settings"/></svg>
+            </button>
+        </header>
+
+        <div class="columns">
+
+            <main class="feed">
+
+                <!-- Tabs, then the composer band, then the page: the same top-to-bottom
+                     order as the browser shell — tab strip, address band, content. -->
+                <nav class="tabs" aria-label="Feed">
+                    <button class="tab" type="button" aria-selected="true">For you</button>
+                    <button class="tab" type="button" aria-selected="false">Following</button>
+                </nav>
+
+                <form class="composer" onsubmit="return false">
+                    <div class="composer__body">
+                        <span class="avatar">IM</span>
+                        <textarea class="composer__input" id="composer-input"
+                                  placeholder="What's happening?" aria-label="Write a post"></textarea>
+                    </div>
+                    <button class="composer__audience" type="button">
+                        <svg class="glyph" aria-hidden="true"><use href="#i-privacy"/></svg>
+                        Everyone can reply
+                    </button>
+                    <div class="composer__foot">
+                        <div class="composer__tools">
+                            <button class="icon-btn" type="button" aria-label="Add image">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-image"/></svg>
+                            </button>
+                            <button class="icon-btn" type="button" aria-label="Add poll">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-poll"/></svg>
+                            </button>
+                            <button class="icon-btn" type="button" aria-label="Add emoji">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-emoji"/></svg>
+                            </button>
+                        </div>
+                        <span class="meter" role="presentation"><span class="meter__fill" id="composer-meter"></span></span>
+                        <button class="btn btn--primary" type="submit" id="composer-post" disabled>Post</button>
+                    </div>
+                </form>
+
+                <article class="post">
+                    <!-- 48px is enough room for the real illustration, so the brand
+                         avatar uses it rather than the simplified glyph. -->
+                    <span class="avatar avatar--brand"><img src="assets/crane-white.png" alt=""></span>
+                    <div>
+                        <div class="post__head">
+                            <span class="post__author">Blue Crane</span>
+                            <span class="post__meta">@bluecrane · 42m</span>
+                            <button class="icon-btn icon-btn--sm post__more" type="button" aria-label="More">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-more"/></svg>
+                            </button>
+                        </div>
+                        <p class="post__body">Crane 1.2 is out. Tab switching holds a single frame on every machine we tested, and the address bar no longer reflows while you type. <a href="#">#release</a></p>
+                        <div class="post__actions">
+                            <button class="action" type="button" aria-label="Reply">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-reply"/></svg></span>
+                                <span class="action__count">31</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Repost">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg></span>
+                                <span class="action__count">88</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Like">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-like"/></svg></span>
+                                <span class="action__count">247</span>
+                            </button>
+                            <button class="action" type="button" aria-label="Share">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-share"/></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post">
+                    <span class="avatar">MO</span>
+                    <div>
+                        <div class="post__head">
+                            <span class="post__author">Maya Okonkwo</span>
+                            <span class="post__meta">@mayabuilds · 2h</span>
+                            <button class="icon-btn icon-btn--sm post__more" type="button" aria-label="More">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-more"/></svg>
+                            </button>
+                        </div>
+                        <p class="post__body">Spent the afternoon rebuilding our settings screen with no shadows at all. Most of the &ldquo;elevation&rdquo; in the old design was doing a job a 1px line does better, and the page came out 40kb lighter.</p>
+                        <div class="post__media" role="img" aria-label="Screenshot of the rebuilt settings screen">
+                            <svg class="glyph" aria-hidden="true"><use href="#i-image"/></svg>
+                        </div>
+                        <div class="post__actions">
+                            <button class="action" type="button" aria-label="Reply">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-reply"/></svg></span>
+                                <span class="action__count">14</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Repost">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg></span>
+                                <span class="action__count">52</span>
+                            </button>
+                            <button class="action is-active" type="button" data-toggle aria-pressed="true" aria-label="Like">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-like"/></svg></span>
+                                <span class="action__count">193</span>
+                            </button>
+                            <button class="action" type="button" aria-label="Share">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-share"/></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post">
+                    <span class="avatar">TL</span>
+                    <div>
+                        <div class="post__head">
+                            <span class="post__author">Theo Lindqvist</span>
+                            <svg class="glyph post__badge" role="img" aria-label="Protected account"><use href="#i-lock"/></svg>
+                            <span class="post__meta">@theolq · 4h</span>
+                            <button class="icon-btn icon-btn--sm post__more" type="button" aria-label="More">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-more"/></svg>
+                            </button>
+                        </div>
+                        <p class="post__body">square corners are a personality</p>
+                        <div class="post__actions">
+                            <button class="action" type="button" aria-label="Reply">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-reply"/></svg></span>
+                                <span class="action__count">9</span>
+                            </button>
+                            <button class="action is-active" type="button" data-toggle aria-pressed="true" aria-label="Repost">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg></span>
+                                <span class="action__count">126</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Like">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-like"/></svg></span>
+                                <span class="action__count">614</span>
+                            </button>
+                            <button class="action" type="button" aria-label="Share">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-share"/></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post">
+                    <span class="avatar">PR</span>
+                    <div>
+                        <div class="post__head">
+                            <span class="post__author">Priya Raman</span>
+                            <span class="post__meta">@praman · 6h</span>
+                            <button class="icon-btn icon-btn--sm post__more" type="button" aria-label="More">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-more"/></svg>
+                            </button>
+                        </div>
+                        <p class="post__body">This is the part people skip. A value ladder is only as good as its darkest rung — get the chrome and the canvas two steps apart and you can delete almost every border in the app.</p>
+
+                        <div class="post__quote">
+                            <div class="post__head">
+                                <span class="avatar avatar--sm">MO</span>
+                                <span class="post__author">Maya Okonkwo</span>
+                                <span class="post__meta">@mayabuilds · 2h</span>
+                            </div>
+                            <p>Most of the &ldquo;elevation&rdquo; in the old design was doing a job a 1px line does better.</p>
+                        </div>
+
+                        <div class="post__actions">
+                            <button class="action" type="button" aria-label="Reply">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-reply"/></svg></span>
+                                <span class="action__count">7</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Repost">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg></span>
+                                <span class="action__count">40</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Like">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-like"/></svg></span>
+                                <span class="action__count">158</span>
+                            </button>
+                            <button class="action" type="button" aria-label="Share">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-share"/></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post">
+                    <span class="avatar">DS</span>
+                    <div>
+                        <p class="post__context">
+                            <svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg>
+                            Ines Moreau reposted
+                        </p>
+                        <div class="post__head">
+                            <span class="post__author">Dev Sharma</span>
+                            <span class="post__meta">@devsh · 9h</span>
+                            <button class="icon-btn icon-btn--sm post__more" type="button" aria-label="More">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-more"/></svg>
+                            </button>
+                        </div>
+                        <p class="post__body">Reading the Crane design doc and the line that stopped me was &ldquo;a browser designed to disappear.&rdquo; Every other browser I have installed wants to be a destination.</p>
+                        <div class="post__actions">
+                            <button class="action" type="button" aria-label="Reply">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-reply"/></svg></span>
+                                <span class="action__count">23</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Repost">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg></span>
+                                <span class="action__count">71</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Like">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-like"/></svg></span>
+                                <span class="action__count">302</span>
+                            </button>
+                            <button class="action" type="button" aria-label="Share">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-share"/></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post">
+                    <span class="avatar">IM</span>
+                    <div>
+                        <div class="post__head">
+                            <span class="post__author">Ines Moreau</span>
+                            <span class="post__meta">@inesm · 1d</span>
+                            <button class="icon-btn icon-btn--sm post__more" type="button" aria-label="More">
+                                <svg class="glyph" aria-hidden="true"><use href="#i-more"/></svg>
+                            </button>
+                        </div>
+                        <p class="post__body"><a href="#">@mayabuilds</a> asked how we stopped the accent taking over. We gave it four jobs — focus, selection, active state, icons — and wrote them down. Anything not on the list does not get the colour.</p>
+                        <div class="post__actions">
+                            <button class="action" type="button" aria-label="Reply">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-reply"/></svg></span>
+                                <span class="action__count">18</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Repost">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-repost"/></svg></span>
+                                <span class="action__count">64</span>
+                            </button>
+                            <button class="action" type="button" data-toggle aria-pressed="false" aria-label="Like">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-like"/></svg></span>
+                                <span class="action__count">221</span>
+                            </button>
+                            <button class="action" type="button" aria-label="Share">
+                                <span class="action__hit"><svg class="glyph" aria-hidden="true"><use href="#i-share"/></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </main>
+
+            <aside class="aside">
+
+                <div class="field">
+                    <svg class="glyph" aria-hidden="true"><use href="#i-search"/></svg>
+                    <input class="field__input" type="search" placeholder="Search" aria-label="Search">
+                    <button class="icon-btn icon-btn--sm" type="button" aria-label="Voice search">
+                        <svg class="glyph" aria-hidden="true"><use href="#i-voice"/></svg>
+                    </button>
+                </div>
+
+                <section class="panel">
+                    <h2 class="panel__title">Trending</h2>
+                    <a class="panel__item" href="#">
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">Design systems</span>
+                            <span class="panel__item-meta">4,821 posts</span>
+                        </span>
+                        <svg class="glyph" aria-hidden="true"><use href="#i-trend"/></svg>
+                    </a>
+                    <a class="panel__item" href="#">
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">#noshadows</span>
+                            <span class="panel__item-meta">1,204 posts</span>
+                        </span>
+                        <svg class="glyph" aria-hidden="true"><use href="#i-trend"/></svg>
+                    </a>
+                    <a class="panel__item" href="#">
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">Inter Tight</span>
+                            <span class="panel__item-meta">892 posts</span>
+                        </span>
+                        <svg class="glyph" aria-hidden="true"><use href="#i-trend"/></svg>
+                    </a>
+                    <a class="panel__item" href="#">
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">WebView2</span>
+                            <span class="panel__item-meta">640 posts</span>
+                        </span>
+                        <svg class="glyph" aria-hidden="true"><use href="#i-trend"/></svg>
+                    </a>
+                </section>
+
+                <section class="panel">
+                    <h2 class="panel__title">Who to follow</h2>
+                    <div class="panel__item">
+                        <span class="avatar avatar--sm">NF</span>
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">Nadia Farrell</span>
+                            <span class="panel__item-meta">@nadiaf</span>
+                        </span>
+                        <button class="btn btn--sm" type="button">Follow</button>
+                    </div>
+                    <div class="panel__item">
+                        <span class="avatar avatar--sm">CL</span>
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">Crane Labs</span>
+                            <span class="panel__item-meta">@cranelabs</span>
+                        </span>
+                        <button class="btn btn--sm" type="button">Follow</button>
+                    </div>
+                    <div class="panel__item">
+                        <span class="avatar avatar--sm"><svg class="glyph glyph--solid" aria-hidden="true"><use href="#i-crane"/></svg></span>
+                        <span class="panel__item-body">
+                            <span class="panel__item-title">Blue Crane</span>
+                            <span class="panel__item-meta">@bluecrane</span>
+                        </span>
+                        <button class="btn btn--sm" type="button">Follow</button>
+                    </div>
+                </section>
+
+            </aside>
+
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+    Just enough behaviour to see the states that a screenshot cannot show. No
+    framework, no build step — a demo page should stay openable from the filesystem.
+*/
+(function () {
+    'use strict';
+
+    // Like and repost. Two posts ship already active so the Sky state is visible
+    // before anything is clicked.
+    document.querySelectorAll('.action[data-toggle]').forEach(function (btn) {
+        var count = btn.querySelector('.action__count');
+        var start = btn.classList.contains('is-active');
+        var base = parseInt(count.textContent, 10) - (start ? 1 : 0);
+
+        btn.addEventListener('click', function () {
+            var on = btn.classList.toggle('is-active');
+            btn.setAttribute('aria-pressed', String(on));
+            count.textContent = base + (on ? 1 : 0);
+        });
+    });
+
+    // Feed tabs.
+    var tabs = document.querySelectorAll('.tab');
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            tabs.forEach(function (other) {
+                other.setAttribute('aria-selected', String(other === tab));
+            });
+        });
+    });
+
+    // Composer: grow with the text, drive the character meter, and gate the button.
+    var LIMIT = 280;
+    var input = document.getElementById('composer-input');
+    var meter = document.getElementById('composer-meter');
+    var post = document.getElementById('composer-post');
+
+    function sync() {
+        var n = input.value.length;
+        post.disabled = n === 0 || n > LIMIT;
+        meter.style.transform = 'scaleX(' + Math.min(n / LIMIT, 1) + ')';
+        input.style.height = 'auto';
+        input.style.height = input.scrollHeight + 'px';
+    }
+
+    input.addEventListener('input', sync);
+    sync();
+}());
+</script>
+
+</body>
+</html>
